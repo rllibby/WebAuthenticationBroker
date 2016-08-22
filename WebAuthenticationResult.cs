@@ -2,6 +2,9 @@
  *  Copyright © 2016 Sage Software, Inc.
  */
 
+using System.Collections.Specialized;
+using System.Web;
+
 namespace Sage.WebAuthenticationBroker
 {
     /// <summary>
@@ -32,6 +35,23 @@ namespace Sage.WebAuthenticationBroker
             ResponseData = data;
             ResponseErrorDetail = error;
             ResponseStatus = status;
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Parse the response data which is normally the redirect uri + the query string into name/value pairs.
+        /// </summary>
+        /// <returns>The collection of name/value pairs</returns>
+        public NameValueCollection ParseResponse()
+        {
+            if (string.IsNullOrEmpty(ResponseData)) return new NameValueCollection();
+
+            var query = ResponseData.IndexOf('?');
+
+            return (query < 0) ? new NameValueCollection() : HttpUtility.ParseQueryString(ResponseData.Substring(query + 1));
         }
 
         #endregion

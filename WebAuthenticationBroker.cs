@@ -90,6 +90,7 @@ namespace Sage.WebAuthenticationBroker
         {
             using (var authForm = new WebAuthenticationForm(request.RequestUri, request.CallbackUri))
             {
+                authForm.UseWebTitle = (request.Options == WebAuthenticationOptions.UseTitle);
                 authForm.ShowDialog(new WindowWrapper((_mainHandle == IntPtr.Zero) ? NativeMethods.GetDesktopWindow() : _mainHandle));
 
                 request.Result = authForm.Result;
@@ -141,6 +142,18 @@ namespace Sage.WebAuthenticationBroker
         /// <param name="requestUri">The starting URI of the web service; this must be a secure address of https://.</param>
         /// <param name="callbackUri">The callback URI that indicates the completion of the web authentication.</param>
         /// <returns>The status and results of the authentication operation, throws on non HTTP error codes.</returns>
+        public static WebAuthenticationResult Authenticate(WebAuthenticationOptions options, string requestUri, string callbackUri)
+        {
+            return Authenticate(options, new Uri(requestUri), new Uri(callbackUri));
+        }
+
+        /// <summary>
+        /// Starts the authentication operation.
+        /// </summary>
+        /// <param name="options">The authentication options</param>
+        /// <param name="requestUri">The starting URI of the web service; this must be a secure address of https://.</param>
+        /// <param name="callbackUri">The callback URI that indicates the completion of the web authentication.</param>
+        /// <returns>The status and results of the authentication operation, throws on non HTTP error codes.</returns>
         public static WebAuthenticationResult Authenticate(WebAuthenticationOptions options, Uri requestUri, Uri callbackUri)
         {
             var authenticate = AuthenticateAsync(options, requestUri, callbackUri);
@@ -182,6 +195,18 @@ namespace Sage.WebAuthenticationBroker
         /// <param name="requestUri">The starting URI of the web service; this must be a secure address of https://.</param>
         /// <param name="callbackUri">The callback URI that indicates the completion of the web authentication.</param>
         /// <returns>The status and results of the authentication operation, throws on non HTTP error codes.</returns>
+        public static async Task<WebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, string requestUri, string callbackUri)
+        {
+            return await AuthenticateAsync(WebAuthenticationOptions.None, new Uri(requestUri), new Uri(callbackUri));
+        }
+
+        /// <summary>
+        /// Starts the authentication operation.
+        /// </summary>
+        /// <param name="options">The authentication options</param>
+        /// <param name="requestUri">The starting URI of the web service; this must be a secure address of https://.</param>
+        /// <param name="callbackUri">The callback URI that indicates the completion of the web authentication.</param>
+        /// <returns>The status and results of the authentication operation, throws on non HTTP error codes.</returns>
         public static async Task<WebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, Uri requestUri, Uri callbackUri)
         {
             if (requestUri == null) throw new ArgumentNullException("requestUri");
@@ -189,7 +214,7 @@ namespace Sage.WebAuthenticationBroker
 
             return await Task.Run(() =>
             {
-                var request = new WebAuthenticationRequest(requestUri.AbsoluteUri, callbackUri.AbsoluteUri);
+                var request = new WebAuthenticationRequest(options, requestUri.AbsoluteUri, callbackUri.AbsoluteUri);
                 var worker = new Thread(() => ThreadedAuthenticate(request));
 
                 worker.SetApartmentState(ApartmentState.STA);

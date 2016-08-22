@@ -23,7 +23,7 @@ namespace Sage.WebAuthenticationBroker
         SilentMode = 1,
 
         /// <summary>
-        /// Tells the web authentication broker to return the window title string of the webpage in the ResponseData property.
+        /// Tells the web authentication broker to use the window title returned from the web page.
         /// </summary>
         UseTitle = 2
     }

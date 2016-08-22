@@ -24,6 +24,7 @@ namespace Sage.WebAuthenticationBroker
         private Browser _browser;
         private string _requestUri;
         private string _callbackUri;
+        private bool _useWebTitle;
         private bool _isAeroEnabled;
 
         #endregion
@@ -123,11 +124,11 @@ namespace Sage.WebAuthenticationBroker
             var rect = CloseButton.ClientRectangle;
             var down = CloseButton.Capture;
             var hover = CloseButton.RectangleToScreen(rect).Contains(Cursor.Position);
-            var pen = new Pen((hover || down )? Color.White : ForeColor, 2.0f);
+            var pen = new Pen((hover || down )? Color.White : ForeColor, 1.7f);
             var color = CloseButton.BackColor;
 
             if (down) color = Color.FromArgb(255, 241, 112, 122);
-
+            
             e.Graphics.Clear(color);
             e.Graphics.DrawLine(pen, new Point(rect.Left + offset, rect.Top + offset), new PointF(rect.Right - offset, rect.Bottom - offset));
             e.Graphics.DrawLine(pen, new Point(rect.Left + offset, rect.Bottom - offset), new PointF(rect.Right - offset, rect.Top + offset));
@@ -195,7 +196,11 @@ namespace Sage.WebAuthenticationBroker
         {
             try
             {
-                if (IsFinal(e.Url.ToString(), null)) return;
+                if (IsFinal(e.Url.ToString(), null) || !_useWebTitle) return;
+                
+                var title = _browser.DocumentTitle;
+
+                if (!string.IsNullOrEmpty(title)) Caption.Text = title; 
             }
             finally
             {
@@ -334,6 +339,15 @@ namespace Sage.WebAuthenticationBroker
         public WebAuthenticationResult Result
         {
             get { return _result; }
+        }
+
+        /// <summary>
+        /// True if the web page title will be used.
+        /// </summary>
+        public bool UseWebTitle
+        {
+            get { return _useWebTitle; }
+            set { _useWebTitle = value; }
         }
 
         #endregion

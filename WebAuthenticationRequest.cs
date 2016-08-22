@@ -23,6 +23,23 @@ namespace Sage.WebAuthenticationBroker
             if (string.IsNullOrEmpty(requestUri)) throw new ArgumentNullException("requestUri");
             if (string.IsNullOrEmpty(callbackUri)) throw new ArgumentNullException("callbackUri");
 
+            Options = WebAuthenticationOptions.None;
+            RequestUri = requestUri;
+            CallbackUri = callbackUri;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="options">The web authentication options to use.</param>
+        /// <param name="requestUri">The request address.</param>
+        /// <param name="callbackUri">The callback address that signals completion.</param>
+        public WebAuthenticationRequest(WebAuthenticationOptions options, string requestUri, string callbackUri)
+        {
+            if (string.IsNullOrEmpty(requestUri)) throw new ArgumentNullException("requestUri");
+            if (string.IsNullOrEmpty(callbackUri)) throw new ArgumentNullException("callbackUri");
+
+            Options = options;
             RequestUri = requestUri;
             CallbackUri = callbackUri;
         }
@@ -30,6 +47,11 @@ namespace Sage.WebAuthenticationBroker
         #endregion
 
         #region Public properties
+
+        /// <summary>
+        /// The web authentication options.
+        /// </summary>
+        public WebAuthenticationOptions Options { get; set; }
 
         /// <summary>
         /// The request address.
