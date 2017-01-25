@@ -11,7 +11,7 @@ namespace Sage.WebAuthenticationBroker
     /// <summary>
     /// Task extension class.
     /// </summary>
-    internal static class TaskExtension
+    public static class TaskExtension
     {
         /// <summary>
         /// Waits on the task and provides message processing. 

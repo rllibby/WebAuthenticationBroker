@@ -52,7 +52,7 @@
             this.Header.Dock = System.Windows.Forms.DockStyle.Top;
             this.Header.Location = new System.Drawing.Point(1, 1);
             this.Header.Name = "Header";
-            this.Header.Size = new System.Drawing.Size(648, 36);
+            this.Header.Size = new System.Drawing.Size(648, 32);
             this.Header.TabIndex = 1;
             this.Header.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnHeaderMouseDown);
             // 
@@ -74,11 +74,12 @@
             // 
             // Caption
             // 
+            this.Caption.AutoSize = true;
             this.Caption.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Caption.ForeColor = System.Drawing.Color.White;
-            this.Caption.Location = new System.Drawing.Point(12, 0);
+            this.Caption.Location = new System.Drawing.Point(3, 6);
             this.Caption.Name = "Caption";
-            this.Caption.Size = new System.Drawing.Size(215, 36);
+            this.Caption.Size = new System.Drawing.Size(144, 17);
             this.Caption.TabIndex = 0;
             this.Caption.Text = "Connecting to a service";
             this.Caption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -107,6 +108,7 @@
             this.Load += new System.EventHandler(this.OnFormLoad);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.OnFormPaint);
             this.Header.ResumeLayout(false);
+            this.Header.PerformLayout();
             this.ResumeLayout(false);
 
         }

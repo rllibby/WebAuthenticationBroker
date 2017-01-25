@@ -44,7 +44,13 @@ namespace WebAuthenticationBrokerTests
         public void TestLiveAccount()
         {
             WebAuthenticationBroker.SetDefaults();
-            WebAuthenticationBroker.Authenticate(WebAuthenticationOptions.None, LiveUri, LiveRedirectUri);
+
+            var auth = WebAuthenticationBroker.Authenticate(WebAuthenticationOptions.None, LiveUri, LiveRedirectUri);
+
+            if (auth.ResponseStatus == WebAuthenticationStatus.Success)
+            {
+                var values = auth.ParseResponse();
+            }
         }
 
         [TestMethod]
@@ -66,7 +72,13 @@ namespace WebAuthenticationBrokerTests
         public void TestAzureAd()
         {
             WebAuthenticationBroker.SetDefaults();
-            WebAuthenticationBroker.Authenticate(WebAuthenticationOptions.UseTitle, AzureUri, AzureRedirectUri);
+
+            var auth = WebAuthenticationBroker.Authenticate(WebAuthenticationOptions.UseTitle, AzureUri, AzureRedirectUri);
+
+            if (auth.ResponseStatus == WebAuthenticationStatus.Success)
+            {
+                var values = auth.ParseResponse();
+            }
         }
 
         #endregion
